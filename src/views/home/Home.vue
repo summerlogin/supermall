@@ -6,6 +6,7 @@
     <home-swiper :banners="banners" class="home-swiper" />
     <recommend-view :recommends="recommends" />
     <future></future>
+    <tab-control :titles="['流行','新款','精选']" />
     <ul>
       <li></li>
       <li></li>
@@ -17,19 +18,24 @@
 </template>
 
 <script>
-import NavBar from "components/common/navbar/NavBar";
 import HomeSwiper from "./childcomps/HomeSwiper";
-import { getHomeMultidata } from "network/home";
 import RecommendView from "./childcomps/RecommendView";
 import Future from "./childcomps/Future";
+
+import NavBar from "components/common/navbar/NavBar";
+
+import TabControl from "components/content/tabControl/TabControl";
+
+import { getHomeMultidata } from "network/home";
 
 export default {
   name: "Home",
   components: {
-    NavBar,
     HomeSwiper,
     RecommendView,
     Future,
+    NavBar,
+    TabControl,
   },
   data() {
     return {
@@ -58,7 +64,7 @@ export default {
   background: var(--color-tint);
   color: white;
 }
-.home-swiper{
+.home-swiper {
   padding-top: 44px;
 }
 </style>
