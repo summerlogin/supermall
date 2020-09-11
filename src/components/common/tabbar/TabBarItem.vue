@@ -27,18 +27,17 @@ export default {
       // isActive: true,
     };
   },
-  methods: {
-    activeClick() {
-      this.$router.push(this.path);
-    },
-  },
   computed: {
     isActive() {
       return this.$route.path.indexOf(this.path) !== -1;
-      //  console.log(this.$route.path)
     },
     activeStyle() {
       return this.isActive ? { color: this.activeColor } : {};
+    },
+  },
+  methods: {
+    activeClick() {
+      this.$router.push(this.path);
     },
   },
 };
