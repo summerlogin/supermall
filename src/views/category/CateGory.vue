@@ -125,7 +125,7 @@ export default {
         this.scroll.finishPullUp();
       }, 1000);
     });
-    /* 上拉 */
+    /* 上拉加载更多 */
     this.scroll.on("pullingUp", () => {
       console.log("需要加载更多");
     });

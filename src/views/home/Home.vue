@@ -3,7 +3,14 @@
     <nav-bar class="nav-home">
       <div slot="center">购物街</div>
     </nav-bar>
-    <scroll class="content">
+    <scroll
+      class="content"
+      ref="scroll"
+      :probe-type="2"
+      @scroll="contentScroll"
+      :pull-up-load="true"
+      @pullingUp="loadMore"
+    >
       <div>
         <home-swiper :banners="banners" class="home-swiper" />
         <recommend-view :recommends="recommends" />
@@ -12,6 +19,7 @@
         <goods-list :goods="showGoods" />
       </div>
     </scroll>
+    <back-top @click.native="backTop" v-show="isShowBackTop"></back-top>
   </div>
 </template>
 
@@ -25,6 +33,7 @@ import Scroll from "components/common/scroll/Scroll";
 
 import TabControl from "components/content/tabControl/TabControl";
 import GoodsList from "components/content/goods/GoodsList";
+import BackTop from "components/content/backTop/BackTop";
 
 import { getHomeMultidata, getHomeGoods } from "network/home";
 
@@ -38,6 +47,7 @@ export default {
     Scroll,
     TabControl,
     GoodsList,
+    BackTop,
   },
   data() {
     return {
@@ -49,6 +59,7 @@ export default {
         sell: { page: 0, list: [] },
       },
       currentType: "pop",
+      isShowBackTop: false,
     };
   },
   created() {
@@ -83,6 +94,17 @@ export default {
           break;
       }
     },
+    backTop() {
+      /* 把内容滚动到顶部 */
+      this.$refs.scroll.scrollTo(0, 0, 1000);
+    },
+    contentScroll(position) {
+      /* 返回顶部按钮显示隐藏 */
+      this.isShowBackTop = -position.y > 1000;
+    },
+    loadMore() {
+      this.getHomeGoods(this.currentType);
+    },
 
     /* 网络请求的相关方法 */
     getHomeMultidata() {
@@ -96,6 +118,9 @@ export default {
       getHomeGoods(type, page).then((res) => {
         this.goods[type].list.push(...res.data.list);
         this.goods[type].page += 1;
+
+        /* 上拉加载更多 */
+        this.$refs.scroll.finishPullUp();
       });
     },
   },
