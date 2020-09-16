@@ -1,13 +1,17 @@
 <template>
-  <div id="Home">
+  <div id="home">
     <nav-bar class="nav-home">
       <div slot="center">购物街</div>
     </nav-bar>
-    <home-swiper :banners="banners" class="home-swiper" />
-    <recommend-view :recommends="recommends" />
-    <future />
-    <tab-control :titles="['流行','新款','精选']" class="tab-control" @tabClick="tabClick" />
-    <goods-list :goods="showGoods" />
+    <scroll class="content">
+      <div>
+        <home-swiper :banners="banners" class="home-swiper" />
+        <recommend-view :recommends="recommends" />
+        <future />
+        <tab-control :titles="['流行','新款','精选']" class="tab-control" @tabClick="tabClick" />
+        <goods-list :goods="showGoods" />
+      </div>
+    </scroll>
   </div>
 </template>
 
@@ -17,6 +21,7 @@ import RecommendView from "./childcomps/RecommendView";
 import Future from "./childcomps/Future";
 
 import NavBar from "components/common/navbar/NavBar";
+import Scroll from "components/common/scroll/Scroll";
 
 import TabControl from "components/content/tabControl/TabControl";
 import GoodsList from "components/content/goods/GoodsList";
@@ -30,6 +35,7 @@ export default {
     RecommendView,
     Future,
     NavBar,
+    Scroll,
     TabControl,
     GoodsList,
   },
@@ -57,7 +63,7 @@ export default {
   computed: {
     /* 商品属性显示 */
     showGoods() {
-     return this.goods[this.currentType].list
+      return this.goods[this.currentType].list;
     },
   },
   methods: {
@@ -97,6 +103,11 @@ export default {
 </script>
 
 <style scoped>
+#home {
+  height: 100vh;
+  position: relative;
+  /* padding-top: 40px; */
+}
 .nav-home {
   position: fixed;
   top: 0;
@@ -108,11 +119,16 @@ export default {
   background: var(--color-tint);
   color: white;
 }
-.home-swiper {
-  padding-top: 44px;
-}
 .tab-control {
   position: sticky;
   top: 44px;
+}
+.content {
+  /* height: calc(100% - 93px); */
+  position: absolute;
+  top: 44px;
+  bottom: 49px;
+  left: 0;
+  right: 0;
 }
 </style>

@@ -15,5 +15,10 @@ npm run serve
 npm run build
 ```
 
+### Better scroll please install @ 1.15.0 - save
+```
+npm install better-scroll@1.15.0 -save
+```
+
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
