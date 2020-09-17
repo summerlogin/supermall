@@ -9,6 +9,7 @@
       :probe-type="2"
       @scroll="contentScroll"
       :pull-up-load="true"
+      @pullingUp="loadMore"
     >
       <div>
         <home-swiper :banners="banners" class="home-swiper" />
@@ -35,6 +36,7 @@ import GoodsList from "components/content/goods/GoodsList";
 import BackTop from "components/content/backTop/BackTop";
 
 import { getHomeMultidata, getHomeGoods } from "network/home";
+import { debounce } from "common/untils/untils";
 
 export default {
   name: "Home",
@@ -69,11 +71,13 @@ export default {
     this.getHomeGoods("pop");
     this.getHomeGoods("new");
     this.getHomeGoods("sell");
-
+  },
+  mounted() {
+    const refresh = debounce(this.$refs.scroll.refresh, 1000);
     /* 监听listItem中图片加载完成 */
-    this.$bus.$on("ListImgLoad",()=>{
-      this.$refs.scroll.refresh()
-    })
+    this.$bus.$on("ListImgLoad", () => {
+      refresh();
+    });
   },
   computed: {
     /* 商品属性显示 */
@@ -106,6 +110,9 @@ export default {
       /* 返回顶部按钮显示隐藏 */
       this.isShowBackTop = -position.y > 1000;
     },
+    loadMore() {//上拉加载更多
+      this.getHomeGoods(this.currentType)
+    },
 
     /* 网络请求的相关方法 */
     getHomeMultidata() {
@@ -119,6 +126,9 @@ export default {
       getHomeGoods(type, page).then((res) => {
         this.goods[type].list.push(...res.data.list);
         this.goods[type].page += 1;
+
+        /* 完成上拉加载更多 */
+        this.$refs.scroll.finishPullUp()
       });
     },
   },
