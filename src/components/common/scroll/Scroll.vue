@@ -28,17 +28,11 @@ export default {
     this.scroll = new Bscroll(this.$refs.wrapper, {
       click: true,
       probeType: this.probeType,
-      pullUpLoad: true,
     });
 
     /* 监听滚动的位置 */
     this.scroll.on("scroll", (position) => {
       this.$emit("scroll", position);
-    });
-
-    /* 上拉加载更多 */
-    this.scroll.on("pullingUp", () => {
-      this.$emit("pullingUp");
     });
   },
   methods: {
@@ -48,6 +42,9 @@ export default {
     finishPullUp() {
       this.scroll.finishPullUp();
     },
+    refresh(){
+      this.scroll.refresh()
+    }
   },
 };
 </script>

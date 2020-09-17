@@ -9,7 +9,6 @@
       :probe-type="2"
       @scroll="contentScroll"
       :pull-up-load="true"
-      @pullingUp="loadMore"
     >
       <div>
         <home-swiper :banners="banners" class="home-swiper" />
@@ -70,6 +69,11 @@ export default {
     this.getHomeGoods("pop");
     this.getHomeGoods("new");
     this.getHomeGoods("sell");
+
+    /* 监听listItem中图片加载完成 */
+    this.$bus.$on("ListImgLoad",()=>{
+      this.$refs.scroll.refresh()
+    })
   },
   computed: {
     /* 商品属性显示 */
@@ -102,9 +106,6 @@ export default {
       /* 返回顶部按钮显示隐藏 */
       this.isShowBackTop = -position.y > 1000;
     },
-    loadMore() {
-      this.getHomeGoods(this.currentType);
-    },
 
     /* 网络请求的相关方法 */
     getHomeMultidata() {
@@ -118,9 +119,6 @@ export default {
       getHomeGoods(type, page).then((res) => {
         this.goods[type].list.push(...res.data.list);
         this.goods[type].page += 1;
-
-        /* 上拉加载更多 */
-        this.$refs.scroll.finishPullUp();
       });
     },
   },
