@@ -3,6 +3,13 @@
     <nav-bar class="nav-home">
       <div slot="center">购物街</div>
     </nav-bar>
+    <tab-control
+      :titles="['流行','新款','精选']"
+      class="tab-control"
+      @tabClick="tabClick"
+      ref="tabOffsetTop1"
+      v-show="isTabFixed"
+    />
     <scroll
       class="content"
       ref="scroll"
@@ -12,10 +19,10 @@
       @pullingUp="loadMore"
     >
       <div>
-        <home-swiper :banners="banners" class="home-swiper" />
+        <home-swiper :banners="banners" class="home-swiper" @swiperImgLoad="swiperImgLoad" />
         <recommend-view :recommends="recommends" />
         <future />
-        <tab-control :titles="['流行','新款','精选']" class="tab-control" @tabClick="tabClick" />
+        <tab-control :titles="['流行','新款','精选']" @tabClick="tabClick" ref="tabOffsetTop2" />
         <goods-list :goods="showGoods" />
       </div>
     </scroll>
@@ -61,6 +68,8 @@ export default {
       },
       currentType: "pop",
       isShowBackTop: false,
+      tabOffsetTop: 0,
+      isTabFixed: false,
     };
   },
   created() {
@@ -101,17 +110,27 @@ export default {
           this.currentType = "sell";
           break;
       }
+      this.$refs.tabOffsetTop1.currentType = index;
+      this.$refs.tabOffsetTop2.currentType = index;
     },
     backTop() {
       /* 把内容滚动到顶部 */
       this.$refs.scroll.scrollTo(0, 0, 1000);
     },
     contentScroll(position) {
-      /* 返回顶部按钮显示隐藏 */
+      /* 判断BackTo是否显示 */
       this.isShowBackTop = -position.y > 1000;
+
+      /* 决定tabControl是否吸顶（position:fixed） */
+      this.isTabFixed = -position.y > this.tabOffsetTop;
     },
-    loadMore() {//上拉加载更多
-      this.getHomeGoods(this.currentType)
+    loadMore() {
+      //上拉加载更多
+      this.getHomeGoods(this.currentType);
+    },
+    swiperImgLoad() {
+      /* 获取TabBarItem的offsetTop */
+      this.tabOffsetTop = this.$refs.tabOffsetTop2.$el.offsetTop;
     },
 
     /* 网络请求的相关方法 */
@@ -128,7 +147,7 @@ export default {
         this.goods[type].page += 1;
 
         /* 完成上拉加载更多 */
-        this.$refs.scroll.finishPullUp()
+        this.$refs.scroll.finishPullUp();
       });
     },
   },
@@ -142,26 +161,20 @@ export default {
   /* padding-top: 40px; */
 }
 .nav-home {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 9;
-}
-.nav-home {
   background: var(--color-tint);
   color: white;
 }
-.tab-control {
-  position: sticky;
-  top: 44px;
-}
 .content {
   /* height: calc(100% - 93px); */
+  overflow: hidden;
   position: absolute;
   top: 44px;
   bottom: 49px;
   left: 0;
   right: 0;
+}
+.tab-control {
+  position: relative;
+  z-index: 9;
 }
 </style>
