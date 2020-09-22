@@ -4,6 +4,7 @@ const Home = () => import('views/home/Home')
 const Cart = () => import('views/cart/Cart')
 const CateGory = () => import('views/category/CateGory')
 const Profile = () => import('views/profile/Profile')
+const Detail = () => import('views/detail/Detail')
 
 
 // 安装插件
@@ -15,20 +16,24 @@ const routes = [
     redirect: '/home'
   },
   {
-    path: '/Home',
+    path: '/home',
     component: Home
   },
   {
-    path: '/Cart',
+    path: '/cart',
     component: Cart
   },
   {
-    path: '/CateGory',
+    path: '/cateGory',
     component: CateGory
   },
   {
-    path: '/Profile',
+    path: '/profile',
     component: Profile
+  },
+  {
+    path: '/detail/:iid',
+    component: Detail
   }
 ]
 //创建router
