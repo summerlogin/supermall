@@ -27,6 +27,7 @@
         </table>
       </div>
     </div>
+    <div class="store-in">进店逛逛</div>
   </div>
 </template>
 <script>
@@ -98,5 +99,15 @@ export default {
 }
 .score {
   padding: 0 5px;
+}
+.store-in{
+  width: 100px;
+  height: 20px;
+  background: #f5f2f2;
+  font-size: 12px;
+  text-align: center;
+  line-height: 20px;
+  border-radius: 5px;
+  margin: 20px auto;
 }
 </style>

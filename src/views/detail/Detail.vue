@@ -1,9 +1,14 @@
 <template>
   <div id="detail">
-    <detail-nav-bar />
-    <detail-swiper :top-images="topImages" />
-    <detail-goods :goods="goods" />
-    <detail-shop-info :shop="shop"/>
+    <detail-nav-bar class="detail-nav" />
+    <scroll class="content">
+      <div>
+        <detail-swiper :top-images="topImages" />
+        <detail-goods :goods="goods" />
+        <detail-shop-info :shop="shop" />
+        <detail-goods-info :detail-info="detailInfo" />
+      </div>
+    </scroll>
   </div>
 </template>
 
@@ -12,7 +17,9 @@ import DetailNavBar from "./childcomps/DetailNavBar";
 import DetailSwiper from "./childcomps/DetailSwiper";
 import DetailGoods from "./childcomps/DetailGoods";
 import detailShopInfo from "./childcomps/detailShopInfo";
+import detailGoodsInfo from "./childcomps/detailGoodsInfo";
 
+import Scroll from "components/common/scroll/Scroll";
 import { geDetail, Goods, Shop } from "network/detail";
 export default {
   name: "Detail",
@@ -21,6 +28,8 @@ export default {
     DetailSwiper,
     DetailGoods,
     detailShopInfo,
+    detailGoodsInfo,
+    Scroll,
   },
   data() {
     return {
@@ -28,6 +37,7 @@ export default {
       topImages: [],
       goods: {},
       shop: {},
+      detailInfo: {},
     };
   },
   created() {
@@ -51,10 +61,32 @@ export default {
 
       // 获取店铺信息
       this.shop = new Shop(data.shopInfo);
+
+      // 获取商品详情信息
+      this.detailInfo = data.detailInfo;
     });
   },
 };
 </script>
 
 <style scoped>
+#detail {
+  position: relative;
+  z-index: 10;
+  background: #fff;
+  height: 100vh;
+}
+.detail-nav {
+  position: relative;
+  z-index: 10;
+  background: #fff;
+}
+.content {
+  overflow: hidden;
+  position: absolute;
+  top: 44px;
+  bottom: 49px;
+  left: 0;
+  right: 0;
+}
 </style>
