@@ -1,12 +1,13 @@
 <template>
   <div id="detail">
     <detail-nav-bar class="detail-nav" />
-    <scroll class="content">
+    <scroll class="content" ref="scroll">
       <div>
         <detail-swiper :top-images="topImages" />
         <detail-goods :goods="goods" />
         <detail-shop-info :shop="shop" />
-        <detail-goods-info :detail-info="detailInfo" />
+        <detail-goods-info :detail-info="detailInfo" @imgLoad="imgLoad" />
+        <detail-item-params :item-params="itemParams"/>
       </div>
     </scroll>
   </div>
@@ -18,9 +19,10 @@ import DetailSwiper from "./childcomps/DetailSwiper";
 import DetailGoods from "./childcomps/DetailGoods";
 import detailShopInfo from "./childcomps/detailShopInfo";
 import detailGoodsInfo from "./childcomps/detailGoodsInfo";
+import detailItemParams from "./childcomps/detailItemParams";
 
 import Scroll from "components/common/scroll/Scroll";
-import { geDetail, Goods, Shop } from "network/detail";
+import { geDetail, Goods, Shop, GoodsParams } from "network/detail";
 export default {
   name: "Detail",
   components: {
@@ -29,6 +31,7 @@ export default {
     DetailGoods,
     detailShopInfo,
     detailGoodsInfo,
+    detailItemParams,
     Scroll,
   },
   data() {
@@ -38,10 +41,10 @@ export default {
       goods: {},
       shop: {},
       detailInfo: {},
+      itemParams: {},
     };
   },
   created() {
-    // 因为缓存原因 导致数据没更新
     /* 保存传入的iid */
     this.iid = this.$route.params.iid;
 
@@ -64,7 +67,18 @@ export default {
 
       // 获取商品详情信息
       this.detailInfo = data.detailInfo;
+
+      /* 获取参数数据 */
+      this.itemParams = new GoodsParams(
+        data.itemParams.info,
+        data.itemParams.rule
+      );
     });
+  },
+  methods: {
+    imgLoad() {
+      this.$refs.scroll.refresh();
+    },
   },
 };
 </script>
