@@ -49,7 +49,7 @@ export default {
   right: 0;
   overflow: hidden;
   text-align: center;
-}
+} 
 .goods-item-info p {
   overflow: hidden;
   text-overflow: ellipsis;

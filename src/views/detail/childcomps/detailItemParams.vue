@@ -33,23 +33,31 @@ export default {
 </script>
 
 <style scoped>
-.params-rule,.params-infos{
+.detail-item-params {
+  padding: 0 10px;
+}
+.params-rule,
+.params-infos {
+  width: 100%;
   border-bottom: 1px solid#dfdede;
   border-collapse: collapse;
   margin: 0 auto;
-  font-size: 14px;
+  font-size: 12px;
 }
-.params-rule tr ,.params-infos tr{
+.params-rule tr,
+.params-infos tr {
   border-bottom: 1px solid#dfdede;
   text-align: center;
   font-weight: normal;
 }
-.params-rule th,.params-infos th {
+.params-rule th,
+.params-infos th {
   text-align: left;
-  padding: 0.5rem 3.5rem 0.5rem 0rem;
+  padding: 5px 10px 5px 0;
   white-space: nowrap;
 }
-.params-rule td,.params-infos td {
+.params-rule td,
+.params-infos td {
   padding: 10px;
   color: var(--color-high-text);
 }
